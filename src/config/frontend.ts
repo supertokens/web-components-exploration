@@ -6,7 +6,7 @@ SuperTokens.init({
   appInfo: {
     apiDomain: "http://localhost:3000",
     apiBasePath: "/api/auth",
-    appName: "...",
+    appName: "WC-test",
   },
   recipeList: [Session.init(), EmailPassword.init()],
 });
