@@ -66,3 +66,17 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.form-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.form-wrap input {
+  border: 1px solid #646cff;
+  border-radius: 8px;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  font-family: inherit;
+}

@@ -1,10 +1,18 @@
 import "./App.css";
 import EmailPassword from "./components/EmailPassword";
+import { superTokensInit } from "./config/frontend";
+
+superTokensInit();
 
 function App() {
   return (
     <>
-      <EmailPassword message="test" />
+      <h1 style={{ "font-size": "2em" }}>
+        SuperTokens <br /> WebComponents demo
+      </h1>
+      <div>
+        <EmailPassword />
+      </div>
     </>
   );
 }

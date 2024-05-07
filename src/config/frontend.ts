@@ -1,12 +1,14 @@
 import SuperTokens from "supertokens-web-js";
 import Session from "supertokens-web-js/recipe/session";
-import EmailPassword from "supertokens-web-js/recipe/emailpassword";
+import ThirdPartyEmailPassword from "supertokens-web-js/recipe/thirdpartyemailpassword";
 
-SuperTokens.init({
-  appInfo: {
-    apiDomain: "http://localhost:3000",
-    apiBasePath: "/api/auth",
-    appName: "WC-test",
-  },
-  recipeList: [Session.init(), EmailPassword.init()],
-});
+export const superTokensInit = () => {
+  SuperTokens.init({
+    appInfo: {
+      apiDomain: "http://localhost:3001",
+      apiBasePath: "",
+      appName: "WC Test",
+    },
+    recipeList: [Session.init(), ThirdPartyEmailPassword.init()],
+  });
+};

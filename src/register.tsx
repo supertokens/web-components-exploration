@@ -1,12 +1,40 @@
 import { customElement } from "solid-element";
 import EmailPassword from "./components/EmailPassword";
+import Dashboard from "./dashboard/Dashboard";
 
 function getInitialProps() {
   return {
-    message: "I'm a web component bruh!",
+    navigate: (path: string) => {
+      window.location.href = path;
+    },
   };
 }
 
 export function registerWebComponents() {
-  customElement("email-password", getInitialProps(), EmailPassword);
+  customElement(
+    "st-email-password",
+    getInitialProps(),
+    (props, { element }) => {
+      const navigate = (path: string) => {
+        if (element.navigate) {
+          element.navigate(path);
+        } else {
+          window.location.href = path;
+        }
+      };
+
+      return () => <EmailPassword navigate={navigate} />;
+    }
+  );
+  customElement("st-dashboard", getInitialProps(), (props, { element }) => {
+    const navigate = (path: string) => {
+      if (element.navigate) {
+        element.navigate(path);
+      } else {
+        window.location.href = path;
+      }
+    };
+
+    return () => <Dashboard navigate={navigate} />;
+  });
 }

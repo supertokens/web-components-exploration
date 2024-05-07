@@ -1,10 +1,18 @@
-import { createSignal } from "solid-js/types/server/reactive.js";
-import { emailPasswordSignUp } from "supertokens-web-js/recipe/thirdpartyemailpassword";
-import { doesEmailExist } from "supertokens-web-js/recipe/thirdpartyemailpassword";
-import { emailPasswordSignIn } from "supertokens-web-js/recipe/thirdpartyemailpassword";
+import { createEffect, createSignal } from "solid-js";
+import {
+  emailPasswordSignUp,
+  doesEmailExist,
+  emailPasswordSignIn,
+} from "supertokens-web-js/recipe/thirdpartyemailpassword";
+import Session from "supertokens-web-js/recipe/session";
+import { noShadowDOM } from "solid-element";
 
 async function signUpClicked(email: string, password: string) {
+  console.log(email, password);
+
   try {
+    console.log(email, password);
+
     let response = await emailPasswordSignUp({
       formFields: [
         {
@@ -17,6 +25,8 @@ async function signUpClicked(email: string, password: string) {
         },
       ],
     });
+
+    console.log(email, password);
 
     if (response.status === "FIELD_ERROR") {
       // one of the input formFields failed validaiton
@@ -39,9 +49,11 @@ async function signUpClicked(email: string, password: string) {
     } else {
       // sign up successful. The session tokens are automatically handled by
       // the frontend SDK.
-      window.location.href = "/homepage";
+      window.location.href = "/dashboard/";
     }
   } catch (err: any) {
+    console.log(err);
+
     if (err.isSuperTokensGeneralError === true) {
       // this may be a custom error message sent from the API by you.
       window.alert(err.message);
@@ -57,9 +69,7 @@ async function checkEmail(email: string) {
       email,
     });
 
-    if (response.doesExist) {
-      window.alert("Email already exists. Please sign in instead");
-    }
+    return response;
   } catch (err: any) {
     if (err.isSuperTokensGeneralError === true) {
       // this may be a custom error message sent from the API by you.
@@ -102,7 +112,7 @@ async function signInClicked(email: string, password: string) {
     } else {
       // sign in successful. The session tokens are automatically handled by
       // the frontend SDK.
-      window.location.href = "/homepage";
+      window.location.href = "/dashboard/";
     }
   } catch (err: any) {
     if (err.isSuperTokensGeneralError === true) {
@@ -114,15 +124,54 @@ async function signInClicked(email: string, password: string) {
   }
 }
 
-interface Props {
-  message: string;
-}
+function EmailPassword({ navigate }: { navigate?: (path: string) => void }) {
+  noShadowDOM();
 
-function EmailPassword(props: Props) {
-  const email = createSignal("");
-  const password = createSignal("");
+  const [email, setEmail] = createSignal("");
+  const [password, setPassword] = createSignal("");
 
-  return <div>{props.message}</div>;
+  const handleSignUpClicked = async () => {
+    const res = await checkEmail(email());
+
+    if (!res?.doesExist) {
+      signUpClicked(email(), password());
+    } else {
+      window.alert("Email already exists. Please sign in instead");
+    }
+  };
+
+  const handleSignInClicked = async () => {
+    const res = await checkEmail(email());
+
+    if (res?.doesExist) {
+      signInClicked(email(), password());
+    } else {
+      window.alert("Email does not exist. Please sign up instead");
+    }
+  };
+
+  createEffect(async () => {
+    if (await Session.doesSessionExist()) {
+      navigate?.("/dashboard/");
+    }
+  });
+
+  return (
+    <div class="form-wrap" part="st-email-password">
+      <input
+        type="email"
+        placeholder="Email"
+        onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
+      />
+      <button onClick={handleSignUpClicked}>Sign Up</button>
+      <button onClick={handleSignInClicked}>Sign In</button>
+    </div>
+  );
 }
 
 export default EmailPassword;

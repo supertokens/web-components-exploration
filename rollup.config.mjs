@@ -5,6 +5,8 @@ import babel from "rollup-plugin-babel";
 import postcss from "rollup-plugin-postcss";
 import autoprefixer from "autoprefixer";
 // import tailwindcss from "tailwindcss";
+import commonjs from "@rollup/plugin-commonjs";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
 
 const extensions = [".ts", ".tsx"];
 
@@ -18,6 +20,7 @@ export default {
   plugins: [
     replace({
       "process.env.NODE_ENV": JSON.stringify("production"),
+      preventAssignment: true,
     }),
     resolve({ extensions }),
     babel({
@@ -39,5 +42,7 @@ export default {
       inject: false,
     }),
     terser({ output: { comments: false } }),
+    commonjs(),
+    nodeResolve(),
   ],
 };

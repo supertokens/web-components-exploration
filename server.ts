@@ -1,16 +1,32 @@
-import SuperTokens from "supertokens-node";
-import ThirdPartyEmailPassword from "supertokens-node/recipe/thirdpartyemailpassword";
 import express from "express";
 import cors from "cors";
 import supertokens from "supertokens-node";
-import { middleware } from "supertokens-node/framework/express";
-import { errorHandler } from "supertokens-node/framework/express";
+import { verifySession } from "supertokens-node/recipe/session/framework/express";
+import {
+  middleware,
+  errorHandler,
+  SessionRequest,
+} from "supertokens-node/framework/express";
+import Multitenancy from "supertokens-node/recipe/multitenancy";
+// import { type TypeInput } from "supertokens-node/types";
+// import { appInfo } from "./appInfo";
+import Session from "supertokens-node/recipe/session";
+import ThirdPartyEmailPassword from "supertokens-node/recipe/thirdpartyemailpassword";
 
-SuperTokens.init({
+supertokens.init({
+  framework: "express",
+  supertokens: {
+    // https://try.supertokens.com is for demo purposes. Replace this with the address of your core instance (sign up on supertokens.com), or self host a core.
+    connectionURI: "https://try.supertokens.com",
+    // apiKey: <API_KEY(if configured)>,
+  },
   appInfo: {
-    apiDomain: "...",
-    appName: "...",
-    websiteDomain: "...",
+    // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
+    appName: "WC test",
+    apiDomain: "http://localhost:3001",
+    websiteDomain: "http://localhost:3000",
+    apiBasePath: "",
+    websiteBasePath: "/",
   },
   recipeList: [
     ThirdPartyEmailPassword.init({
@@ -58,21 +74,36 @@ SuperTokens.init({
         },
       ],
     }),
-    // ...
+    Session.init(), // initializes session features
   ],
 });
 
-let app = express();
+const app = express();
 
 app.use(
   cors({
     origin: "http://localhost:3000",
     allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
+    methods: ["GET", "PUT", "POST", "DELETE"],
     credentials: true,
   })
 );
 
+// This exposes all the APIs from SuperTokens to the client.
+app.use(middleware());
+
+// An example API that requires session verification
+app.get("/sessioninfo", verifySession(), async (req: SessionRequest, res) => {
+  let session = req.session;
+  res.send({
+    sessionHandle: session!.getHandle(),
+    userId: session!.getUserId(),
+    accessTokenPayload: session!.getAccessTokenPayload(),
+  });
+});
+
+// In case of session related errors, this error handler
+// returns 401 to the client.
 app.use(errorHandler());
 
-// IMPORTANT: CORS should be before the below line.
-app.use(middleware());
+app.listen(3001, () => console.log(`API Server listening on port 3001`));
