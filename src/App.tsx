@@ -1,19 +1,24 @@
-import "./App.css";
+// import "./App.css";
 import EmailPassword from "./components/EmailPassword";
+import Shell from "./components/Shell";
 import { superTokensInit } from "./config/frontend";
 
 superTokensInit();
 
 function App() {
   return (
-    <>
-      <h1 style={{ "font-size": "2em" }}>
-        SuperTokens <br /> WebComponents demo
-      </h1>
+    <Shell
+      header={
+        <h2 style={{ "text-align": "center" }}>
+          SuperTokens WebComponents Demo
+        </h2>
+      }
+    >
       <div>
+        <h2 style={{ "text-align": "center" }}>Log-in page</h2>
         <EmailPassword />
       </div>
-    </>
+    </Shell>
   );
 }
 

@@ -1,4 +1,3 @@
-import "../App.css";
 import Session from "supertokens-web-js/recipe/session";
 import { superTokensInit } from "../config/frontend";
 import { Show, createEffect, createSignal } from "solid-js";
@@ -7,7 +6,15 @@ import { noShadowDOM } from "solid-element";
 superTokensInit();
 
 function Dashboard({ navigate }: { navigate?: (path: string) => void }) {
-  noShadowDOM();
+  if (!import.meta?.env?.DEV) {
+    noShadowDOM();
+  }
+
+  if (navigate === undefined) {
+    navigate = (path: string) => {
+      window.location.href = path;
+    };
+  }
 
   const [loading, setLoading] = createSignal(true);
 
@@ -38,12 +45,15 @@ function Dashboard({ navigate }: { navigate?: (path: string) => void }) {
   });
 
   return (
-    <div class="form-wrap" part="st-dashboard">
-      <Show when={loading()}>Loading...</Show>
-      <Show when={!loading()}>
-        <button onClick={getSessionInfo}>Session Info</button>
-        <button onClick={signOut}>Sign Out</button>
-      </Show>
+    <div>
+      <h2 style={{ "text-align": "center" }}>Dashboard</h2>
+      <div class="form-wrap" part="st-dashboard">
+        <Show when={loading()}>Loading...</Show>
+        <Show when={!loading()}>
+          <button onClick={getSessionInfo}>Session Info</button>
+          <button onClick={signOut}>Sign Out</button>
+        </Show>
+      </div>
     </div>
   );
 }

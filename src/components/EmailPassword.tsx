@@ -125,7 +125,15 @@ async function signInClicked(email: string, password: string) {
 }
 
 function EmailPassword({ navigate }: { navigate?: (path: string) => void }) {
-  noShadowDOM();
+  if (!import.meta?.env?.DEV) {
+    noShadowDOM();
+  }
+
+  if (navigate === undefined) {
+    navigate = (path: string) => {
+      window.location.href = path;
+    };
+  }
 
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");

@@ -4,11 +4,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="/dist/widget.mjs" type="module"></script>
   <style>
-    .st-dashboard {}
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+    }
   </style>
 </head>
 
 <body>
-  <h1>SuperTokens WebComponents Test [Dashboard]</h1>
-  <st-dashboard class="st-dashboard"></st-dashboard>
+  <st-shell>
+    <div slot="header">
+      <h1>SuperTokens WebComponents Test</h1>
+    </div>
+    <st-dashboard class="st-dashboard"></st-dashboard>
+  </st-shell>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const emailComponent = document.querySelector(".st-dashboard");
+      if (emailComponent) {
+        emailComponent.navigate = function (path) {
+          console.log("Navigate to:", path);
+          window.location.href = path;
+        };
+      }
+    });
+  </script>
 </body>
