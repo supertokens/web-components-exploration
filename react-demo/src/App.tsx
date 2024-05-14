@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import "./components/widget.mjs";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const navigate = useNavigate();
+  const emailPasswordRef = useRef(null);
+
+  useEffect(() => {
+    const emailPasswordElement = emailPasswordRef.current;
+    if (emailPasswordElement) {
+      (emailPasswordElement as HTMLElement).navigate = (path: string) => {
+        console.log("RR navigate to:", path);
+        navigate(path);
+      };
+    }
+
+    return () => {
+      if (emailPasswordElement) {
+        (emailPasswordElement as HTMLElement).navigate = null;
+      }
+    };
+  }, [navigate]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <st-shell>
+      <div slot="header">
+        <h1>SuperTokens WebComponents Test</h1>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <st-email-password
+        className="st-email-password"
+        ref={emailPasswordRef}
+      ></st-email-password>
+    </st-shell>
+  );
 }
 
-export default App
+export default App;
