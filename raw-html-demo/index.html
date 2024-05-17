@@ -2,7 +2,7 @@
   <title>WC test</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="/dist/widget.mjs" type="module"></script>
+  <script src="/dist/wcwrap.js" type="module"></script>
   <style>
     body,
     html {
@@ -21,7 +21,9 @@
   </st-shell>
 
   <script>
+
     document.addEventListener("DOMContentLoaded", function () {
+      loadComponents(["st-email-password", "st-shell"]);
       const emailComponent = document.querySelector(".st-email-password");
       if (emailComponent) {
         emailComponent.navigate = function (path) {

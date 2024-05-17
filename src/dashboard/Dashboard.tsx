@@ -1,14 +1,9 @@
 import Session from "supertokens-web-js/recipe/session";
 import { superTokensInit } from "../config/frontend";
 import { Show, createEffect, createSignal } from "solid-js";
-import { noShadowDOM } from "solid-element";
-
-superTokensInit();
 
 function Dashboard({ navigate }: { navigate?: (path: string) => void }) {
-  if (!import.meta?.env?.DEV) {
-    noShadowDOM();
-  }
+  superTokensInit();
 
   if (navigate === undefined) {
     navigate = (path: string) => {

@@ -5,14 +5,14 @@ import {
   emailPasswordSignIn,
 } from "supertokens-web-js/recipe/thirdpartyemailpassword";
 import Session from "supertokens-web-js/recipe/session";
-import { noShadowDOM } from "solid-element";
+import { superTokensInit } from "../config/frontend";
 
-async function signUpClicked(email: string, password: string) {
-  console.log(email, password);
-
+async function signUpClicked(
+  email: string,
+  password: string,
+  navigate: (path: string) => void
+) {
   try {
-    console.log(email, password);
-
     let response = await emailPasswordSignUp({
       formFields: [
         {
@@ -49,7 +49,7 @@ async function signUpClicked(email: string, password: string) {
     } else {
       // sign up successful. The session tokens are automatically handled by
       // the frontend SDK.
-      window.location.href = "/dashboard/";
+      navigate("/dashboard/");
     }
   } catch (err: any) {
     console.log(err);
@@ -80,7 +80,11 @@ async function checkEmail(email: string) {
   }
 }
 
-async function signInClicked(email: string, password: string) {
+async function signInClicked(
+  email: string,
+  password: string,
+  navigate: (path: string) => void
+) {
   try {
     let response = await emailPasswordSignIn({
       formFields: [
@@ -112,7 +116,7 @@ async function signInClicked(email: string, password: string) {
     } else {
       // sign in successful. The session tokens are automatically handled by
       // the frontend SDK.
-      window.location.href = "/dashboard/";
+      navigate("/dashboard/");
     }
   } catch (err: any) {
     if (err.isSuperTokensGeneralError === true) {
@@ -125,9 +129,7 @@ async function signInClicked(email: string, password: string) {
 }
 
 function EmailPassword({ navigate }: { navigate?: (path: string) => void }) {
-  if (!import.meta?.env?.DEV) {
-    noShadowDOM();
-  }
+  superTokensInit();
 
   if (navigate === undefined) {
     navigate = (path: string) => {
@@ -142,7 +144,7 @@ function EmailPassword({ navigate }: { navigate?: (path: string) => void }) {
     const res = await checkEmail(email());
 
     if (!res?.doesExist) {
-      signUpClicked(email(), password());
+      signUpClicked(email(), password(), navigate);
     } else {
       window.alert("Email already exists. Please sign in instead");
     }
@@ -152,7 +154,7 @@ function EmailPassword({ navigate }: { navigate?: (path: string) => void }) {
     const res = await checkEmail(email());
 
     if (res?.doesExist) {
-      signInClicked(email(), password());
+      signInClicked(email(), password(), navigate);
     } else {
       window.alert("Email does not exist. Please sign up instead");
     }
@@ -171,6 +173,7 @@ function EmailPassword({ navigate }: { navigate?: (path: string) => void }) {
         placeholder="Email"
         onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
       />
+      <slot name="custom-component"></slot>
       <input
         type="password"
         placeholder="Password"

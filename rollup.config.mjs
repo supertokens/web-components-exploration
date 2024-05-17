@@ -13,7 +13,8 @@ const extensions = [".ts", ".tsx"];
 export default {
   input: "./src/wcwrap.tsx",
   output: {
-    file: "dist/widget.mjs",
+    dir: "dist",
+    // file: "dist/widget.mjs",
     format: "es",
   },
   external: [],
