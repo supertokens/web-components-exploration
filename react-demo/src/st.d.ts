@@ -6,11 +6,13 @@ declare namespace JSX {
     >;
     "st-email-password": React.DetailedHTMLProps<
       React.HTMLAttributes<HTMLElement>,
-      HTMLElement
+      HTMLElement,
+      { navigate: (path: string) => void }
     >;
     "st-dashboard": React.DetailedHTMLProps<
       React.HTMLAttributes<HTMLElement>,
-      HTMLElement
+      HTMLElement,
+      { navigate: (path: string) => void }
     >;
   }
 }

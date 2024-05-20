@@ -1,9 +1,14 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { load } from "./components/dashboard";
 
 function Dashboard() {
   const dashboardRef = useRef(null);
   const navigate = useNavigate(); // Hook to get the navigate function
+
+  useEffect(() => {
+    load();
+  }, []);
 
   useEffect(() => {
     const dashboardElement = dashboardRef.current;
@@ -22,12 +27,7 @@ function Dashboard() {
   }, [navigate]);
 
   return (
-    <st-shell>
-      <div slot="header">
-        <h1>SuperTokens WebComponents Test</h1>
-      </div>
-      <st-dashboard ref={dashboardRef} className="st-dashboard"></st-dashboard>
-    </st-shell>
+    <st-dashboard ref={dashboardRef} className="st-dashboard"></st-dashboard>
   );
 }
 

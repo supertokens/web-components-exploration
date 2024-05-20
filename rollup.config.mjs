@@ -10,13 +10,56 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 
 const extensions = [".ts", ".tsx"];
 
+// export default {
+//   input: "./src/wcwrap.tsx",
+//   output: {
+//     dir: "dist",
+//     // file: "dist/widget.mjs",
+//     format: "es",
+//   },
+//   external: [],
+//   plugins: [
+//     replace({
+//       "process.env.NODE_ENV": JSON.stringify("production"),
+//       preventAssignment: true,
+//     }),
+//     resolve({ extensions }),
+//     babel({
+//       exclude: "node_modules/**",
+//       presets: ["solid", "@babel/preset-typescript"],
+//       extensions,
+//     }),
+//     postcss({
+//       plugins: [
+//         autoprefixer(),
+//         // tailwindcss({
+//         //   content: ["./src/**/*.tsx"],
+//         // }),
+//       ],
+//       extract: false,
+//       modules: false,
+//       autoModules: false,
+//       minimize: true,
+//       inject: false,
+//     }),
+//     terser({ output: { comments: false } }),
+//     commonjs(),
+//     nodeResolve(),
+//   ],
+// };
+
 export default {
-  input: "./src/wcwrap.tsx",
-  output: {
-    dir: "dist",
-    // file: "dist/widget.mjs",
-    format: "es",
+  input: {
+    dashboard: "./src/outputs/DashboardWrap.tsx",
+    emailpassword: "./src/outputs/EmailPasswordWrap.tsx",
   },
+  output: [
+    {
+      dir: "dist",
+      format: "es",
+      entryFileNames: "[name].mjs",
+    },
+  ],
   external: [],
   plugins: [
     replace({
@@ -30,12 +73,7 @@ export default {
       extensions,
     }),
     postcss({
-      plugins: [
-        autoprefixer(),
-        // tailwindcss({
-        //   content: ["./src/**/*.tsx"],
-        // }),
-      ],
+      plugins: [autoprefixer()],
       extract: false,
       modules: false,
       autoModules: false,

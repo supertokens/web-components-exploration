@@ -2,7 +2,7 @@
   <title>WC test</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="/dist/wcwrap.js" type="module"></script>
+  <script src="/dist/dashboard.mjs" type="module"></script>
   <style>
     body,
     html {
@@ -13,16 +13,11 @@
 </head>
 
 <body>
-  <st-shell>
-    <div slot="header">
-      <h1>SuperTokens WebComponents Test</h1>
-    </div>
-    <st-dashboard class="st-dashboard"></st-dashboard>
-  </st-shell>
+  <st-dashboard class="st-dashboard"></st-dashboard>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      loadComponents(["st-dashboard", "st-shell"]);
+      window.ST.Dashboard.load();
       const emailComponent = document.querySelector(".st-dashboard");
       if (emailComponent) {
         emailComponent.navigate = function (path) {

@@ -2,7 +2,7 @@
   <title>WC test</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="/dist/wcwrap.js" type="module"></script>
+  <script src="/dist/emailpassword.mjs" type="module"></script>
   <style>
     body,
     html {
@@ -13,17 +13,12 @@
 </head>
 
 <body>
-  <st-shell>
-    <div slot="header">
-      <h1>SuperTokens WebComponents Test</h1>
-    </div>
-    <st-email-password class="st-email-password"></st-email-password>
-  </st-shell>
+  <st-email-password class="st-email-password"></st-email-password>
 
   <script>
 
     document.addEventListener("DOMContentLoaded", function () {
-      loadComponents(["st-email-password", "st-shell"]);
+      window.ST.EmailPassword.load();
       const emailComponent = document.querySelector(".st-email-password");
       if (emailComponent) {
         emailComponent.navigate = function (path) {

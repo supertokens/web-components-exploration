@@ -1,38 +1,37 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./components/widget.mjs";
+import { load } from "./components/emailpassword";
 
-function App() {
-  const navigate = useNavigate();
-  const emailPasswordRef = useRef(null);
+function Dashboard() {
+  const dashboardRef = useRef(null);
+  const navigate = useNavigate(); // Hook to get the navigate function
 
   useEffect(() => {
-    const emailPasswordElement = emailPasswordRef.current;
-    if (emailPasswordElement) {
-      (emailPasswordElement as HTMLElement).navigate = (path: string) => {
-        console.log("RR navigate to:", path);
-        navigate(path);
+    load();
+  }, []);
+
+  useEffect(() => {
+    const dashboardElement = dashboardRef.current;
+    if (dashboardElement) {
+      (dashboardElement as HTMLElement).navigate = (path: string) => {
+        console.log("RR Navigate to:", path);
+        navigate(path); // Navigate using React Router
       };
     }
 
     return () => {
-      if (emailPasswordElement) {
-        (emailPasswordElement as HTMLElement).navigate = null;
+      if (dashboardElement) {
+        (dashboardElement as HTMLElement).navigate = null; // Clean up the navigate property
       }
     };
   }, [navigate]);
 
   return (
-    <st-shell>
-      <div slot="header">
-        <h1>SuperTokens WebComponents Test</h1>
-      </div>
-      <st-email-password
-        className="st-email-password"
-        ref={emailPasswordRef}
-      ></st-email-password>
-    </st-shell>
+    <st-email-password
+      ref={dashboardRef}
+      className="st-dashboard"
+    ></st-email-password>
   );
 }
 
-export default App;
+export default Dashboard;
