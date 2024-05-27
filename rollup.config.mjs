@@ -52,6 +52,10 @@ export default {
   input: {
     dashboard: "./src/outputs/DashboardWrap.tsx",
     emailpassword: "./src/outputs/EmailPasswordWrap.tsx",
+    dummy: "./src/outputs/DummyWrap.tsx",
+    fakesocial: "./src/outputs/ButtonsWrap.tsx",
+    loader: "./src/outputs/Loader.tsx",
+    routeMounter: "./src/outputs/routeMounter.tsx",
   },
   output: [
     {

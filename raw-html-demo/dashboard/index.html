@@ -1,8 +1,8 @@
 <head>
   <title>WC test</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="/dist/dashboard.mjs" type="module"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="/dist/routeMounter.mjs" type="module"></script>
   <style>
     body,
     html {
@@ -13,18 +13,17 @@
 </head>
 
 <body>
-  <st-dashboard class="st-dashboard"></st-dashboard>
+  <div id="root"></div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      window.ST.Dashboard.load();
-      const emailComponent = document.querySelector(".st-dashboard");
-      if (emailComponent) {
-        emailComponent.navigate = function (path) {
-          console.log("Navigate to:", path);
+      window.ST.staticMount({
+        targetElement: "#root",
+        navigate: (path) => {
           window.location.href = path;
-        };
-      }
+        },
+        preBuiltUI: "dashboard",
+      });
     });
   </script>
 </body>

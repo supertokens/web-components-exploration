@@ -1,0 +1,44 @@
+<head>
+  <title>WC test</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/page/page.js"></script>
+  <script src="/dist/routeMounter.mjs" type="module"></script>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      ST.registerComponent({ navigate: page, preBuiltUI: "email-password" });
+      ST.registerComponent({ navigate: page, preBuiltUI: "dashboard" });
+
+      // Can't use document.createElement, because it doesn't trigger connectedCallback (which is needed for a web component to be mounted properly)
+      const routes = {
+        "/": () => {
+          const component = `<st-email-password class="st-email-password"></st-email-password>`;
+          document.querySelector("#root").innerHTML = component;
+        },
+        "/dashboard": () => {
+          const component = `<st-dashboard class="st-email-password"></st-dashboard>`;
+          document.querySelector("#root").innerHTML = component;
+        },
+      };
+
+      Object.keys(routes).forEach((path) => {
+        page(path, routes[path]);
+      });
+
+      // init
+      page();
+    });
+  </script>
+</body>

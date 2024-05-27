@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+// @ts-ignore
 import { load } from "./components/dashboard";
 
 function Dashboard() {

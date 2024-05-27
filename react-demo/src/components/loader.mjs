@@ -1,0 +1,1 @@
+const o={emailpassword:["./emailpassword.mjs","./dashboard.mjs"],dummy:["./dummy.mjs"],fakesocial:["./fakesocial.mjs"]},a=async a=>{const s=o[a];for(const o of s){(await import(o)).load()}};window.ST=window.ST||{},window.ST={...window.ST,loader:{load:a}};export{a as load};
