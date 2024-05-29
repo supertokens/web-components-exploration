@@ -2,29 +2,40 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import "./index.css";
-import { registerComponent } from "./components/routeMounter";
+import {
+  registerComponent,
+  COMPONENT_MAP,
+  DEFAULT_PATHS,
+} from "./components/routeMounter";
+
+const PATH_OVERRIDE = {
+  ...DEFAULT_PATHS,
+  "email-password": "/",
+};
 
 const getRoutes = ({
   navigate,
   preBuiltUIList,
-  path,
 }: {
   navigate: (path: string) => void;
-  preBuiltUIList: string[];
+  preBuiltUIList: { tag: string; id: string }[];
   path?: string;
 }) => {
+  console.log(preBuiltUIList);
+
   preBuiltUIList.forEach((preBuiltUI) => {
-    registerComponent({ navigate, preBuiltUI });
+    registerComponent({ navigate, preBuiltUI: preBuiltUI.id });
   });
 
-  return [
-    <Route
-      path="/"
-      element={<st-email-password></st-email-password>}
-      key="root"
-    />,
-    <Route path="/dashboard" element={<st-dashboard />} key="dashboard" />,
-  ];
+  return preBuiltUIList.map((preBuiltUI) => {
+    return (
+      <Route
+        path={PATH_OVERRIDE[preBuiltUI.id]}
+        element={React.createElement(preBuiltUI.tag, null)}
+        key={preBuiltUI.id}
+      />
+    );
+  });
 };
 
 const Root = () => {
@@ -32,7 +43,10 @@ const Root = () => {
 
   return (
     <Routes>
-      {getRoutes({ navigate, preBuiltUIList: ["email-password", "dashboard"] })}
+      {getRoutes({
+        navigate,
+        preBuiltUIList: [COMPONENT_MAP.EMAIL_PASSWORD, COMPONENT_MAP.DASHBOARD],
+      })}
     </Routes>
   );
 };
