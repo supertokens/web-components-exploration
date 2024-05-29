@@ -9,3 +9,8 @@ For me: // framework comparison
 - Uniform components (JSX ideally)
 - Async calls during init (fetch during mount)
 - Async event handlers
+
+---
+
+- SSR support
+- Bundle size / embedding
