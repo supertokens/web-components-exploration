@@ -6,6 +6,7 @@ import {
   registerComponent,
   COMPONENT_MAP,
   DEFAULT_PATHS,
+  // @ts-ignore
 } from "./components/routeMounter";
 
 const PATH_OVERRIDE = {
@@ -20,7 +21,6 @@ const getRoutes = ({
 }: {
   navigate: (path: string) => void;
   preBuiltUIList: { tag: string; id: string }[];
-  path?: string;
 }) => {
   preBuiltUIList.forEach((preBuiltUI) => {
     registerComponent({ navigate, preBuiltUI: preBuiltUI.id });
