@@ -10,9 +10,10 @@ import {
 
 const PATH_OVERRIDE = {
   ...DEFAULT_PATHS,
-  "email-password": "/",
+  [COMPONENT_MAP.EMAIL_PASSWORD.id]: "/",
 };
 
+// Goes to React SDK
 const getRoutes = ({
   navigate,
   preBuiltUIList,
@@ -21,8 +22,6 @@ const getRoutes = ({
   preBuiltUIList: { tag: string; id: string }[];
   path?: string;
 }) => {
-  console.log(preBuiltUIList);
-
   preBuiltUIList.forEach((preBuiltUI) => {
     registerComponent({ navigate, preBuiltUI: preBuiltUI.id });
   });

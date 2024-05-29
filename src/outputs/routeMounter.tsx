@@ -1,3 +1,4 @@
+// Goes to library together with dependencies
 import { lazy } from "solid-js";
 import Shell from "../components/Shell";
 import { customElement, noShadowDOM } from "solid-element";
